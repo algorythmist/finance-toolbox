@@ -3,7 +3,7 @@ import os
 import pandas as pd
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-INDUSTRY_DATA_DIR = os.path.join(ROOT_DIR, '..\data\industry')
+INDUSTRY_DATA_DIR = os.path.join(ROOT_DIR, '../data/industry')
 
 
 def load_industry_data(filename):
