@@ -2,6 +2,8 @@ import pytest
 
 from fintools import *
 
+industry_returns = load_industry_data('ind30_m_vw_rets.csv') / 100
+
 
 def test_portfolio_return():
     r = [1, 2, 3]
@@ -18,11 +20,9 @@ def test_portfolio_variance():
     volatility = portfolio_variance(w, cov)
     assert 2.150 == pytest.approx(volatility, 0.001)
 
-#TODO: load file once
 
 def test_minimize_volatility():
     assets = ['Games', 'Fin']
-    industry_returns = load_industry_data('ind30_m_vw_rets.csv') / 100
     returns = industry_returns["1996":"2000"][assets]
     expected_returns = annualize_returns(returns, 12)
     covariance = returns.cov()
@@ -36,7 +36,6 @@ def test_minimize_volatility():
 
 def test_maximize_sharpe_ratio():
     assets = ['Games', 'Smoke', 'Beer', 'Food']
-    industry_returns = load_industry_data('ind30_m_vw_rets.csv') / 100
     returns = industry_returns["1996":"2000"][assets]
     expected_returns = annualize_returns(returns, 12)
     covariance = returns.cov()
