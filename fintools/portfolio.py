@@ -1,6 +1,6 @@
 import numpy as np
-from scipy.optimize import minimize
-
+from scipy.optimize import minimize, LinearConstraint, Bounds
+from functools import partial
 
 def portfolio_return(weights, returns):
     """
@@ -21,6 +21,9 @@ def portfolio_variance(weights, covariance):
     """
     np_weights = np.array(weights)
     return (np_weights.T @ covariance @ np_weights) ** 0.5
+
+
+
 
 
 def minimize_volatility(target_return, expected_returns, covariance,
@@ -52,6 +55,44 @@ def minimize_volatility(target_return, expected_returns, covariance,
                         bounds=bounds,
                         constraints=(return_equals_to_target, weights_sum_to_1),
                         args=(covariance,),
+                        options={'disp': debug})
+    return solution.x
+
+
+def sharpe_ratio(weights, expected_returns, covariance, risk_free_rate = 0):
+    excess_return = portfolio_return(weights, expected_returns) - risk_free_rate
+    volatility = portfolio_variance(weights, covariance)
+    return -excess_return / volatility
+
+
+def maximize_sharpe_ratio(expected_returns, covariance,
+                          risk_free_rate=0,
+                          targeted_annual_return=None,
+                          debug=False):
+    """
+    Find the portfolio weights that maximize the sharpe ration of excess returns
+    :param expected_returns: The vector of expected returns
+    :param covariance: The covariance matrix of assets
+    :param risk_free_rate: the risk free rate (default 0)
+    :param targeted_annual_return: Optional target rate of return
+    :param debug: Display optimization details if True
+    :return: the optimal weights
+    """
+
+    sharpe = partial(sharpe_ratio, expected_returns = expected_returns, covariance = covariance, risk_free_rate = risk_free_rate)
+    n = len(expected_returns)
+    guess = np.repeat(1 / n, n)
+    constraints = []
+    fully_invested_constraint = LinearConstraint(np.ones(n), [1], [1])
+    constraints.append(fully_invested_constraint)
+    if targeted_annual_return:
+        constraints.append(LinearConstraint(expected_returns, [targeted_annual_return], [targeted_annual_return]))
+    bounds = Bounds(np.zeros(n), np.ones(n))
+    solution = minimize(sharpe,
+                        method='SLSQP',
+                        x0=guess,
+                        constraints=constraints,
+                        bounds=bounds,
                         options={'disp': debug})
     return solution.x
 

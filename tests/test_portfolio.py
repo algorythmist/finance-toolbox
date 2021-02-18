@@ -18,10 +18,11 @@ def test_portfolio_variance():
     volatility = portfolio_variance(w, cov)
     assert 2.150 == pytest.approx(volatility, 0.001)
 
+#TODO: load file once
 
 def test_minimize_volatility():
     assets = ['Games', 'Fin']
-    industry_returns = load_industry_data('ind30_m_vw_rets.csv')/100
+    industry_returns = load_industry_data('ind30_m_vw_rets.csv') / 100
     returns = industry_returns["1996":"2000"][assets]
     expected_returns = annualize_returns(returns, 12)
     covariance = returns.cov()
@@ -31,6 +32,20 @@ def test_minimize_volatility():
     assert 1 == w.sum()
     vol = portfolio_variance(w, covariance)
     assert 0.056163 == pytest.approx(vol, 0.0001)
+
+
+def test_maximize_sharpe_ratio():
+    assets = ['Games', 'Smoke', 'Beer', 'Food']
+    industry_returns = load_industry_data('ind30_m_vw_rets.csv') / 100
+    returns = industry_returns["1996":"2000"][assets]
+    expected_returns = annualize_returns(returns, 12)
+    covariance = returns.cov()
+    risk_free_rate = 0.01
+    w = maximize_sharpe_ratio(expected_returns, covariance,
+                              risk_free_rate=risk_free_rate)
+    assert 1.0 == pytest.approx(w.sum(), 0.000001)
+    expected = [0.11430192, 0.06604457, 0.22653882, 0.59311468]
+    assert np.all([expected[i] == pytest.approx(w[i], 0.00001) for i in range(0, len(expected))])
 
 
 def test_portfolio_class():
