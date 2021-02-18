@@ -8,6 +8,7 @@ def test_portfolio_return():
     w = [3, 2, 1]
     total_return = portfolio_return(w, r)
     assert np.equal(10, total_return)
+    assert np.equal(10, np.array(total_return))
 
 
 def test_portfolio_volatility():

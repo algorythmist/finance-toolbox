@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='finance-toolbox',
-    version='1.0',
+    version='0.1',
     packages=setuptools.find_packages(),
     url='https://github.com/algorythmist/finance-toolbox',
     license='MIT',
