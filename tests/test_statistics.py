@@ -9,9 +9,9 @@ def test_skewness_normal():
     assert 0 == pytest.approx(skewness(samples), abs=0.1)
 
 
-def test_kurtosis_normal():
+def test_excess_kurtosis_normal():
     samples = np.random.normal(0, 0.15, size=(100000, 1))
-    assert 3 == pytest.approx(kurtosis(samples), abs=0.1)
+    assert 0 == pytest.approx(excess_kurtosis(samples), abs=0.1)
 
 
 def test_is_normal():

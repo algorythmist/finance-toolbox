@@ -24,9 +24,6 @@ def portfolio_variance(weights, covariance):
     return (np_weights.T @ covariance @ np_weights) ** 0.5
 
 
-
-
-
 def minimize_volatility(target_return, expected_returns, covariance,
                         debug=False):
     """

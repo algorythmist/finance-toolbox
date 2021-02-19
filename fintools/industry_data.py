@@ -4,6 +4,7 @@ import pandas as pd
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 INDUSTRY_DATA_DIR = os.path.join(ROOT_DIR, '../data/industry')
+PRICE_DATA_DIR = os.path.join(ROOT_DIR, '../data/prices')
 
 
 def load_industry_data(filename):
@@ -39,3 +40,10 @@ def load_hfi_returns():
     hfi /= 100
     hfi.index = hfi.index.to_period('M')
     return hfi
+
+
+def read_prices(filename):
+    return pd.read_csv(os.path.join(PRICE_DATA_DIR, filename),
+                       index_col="Date",
+                       parse_dates=True,
+                       na_values=['nan'])

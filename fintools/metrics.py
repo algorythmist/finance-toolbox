@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
-from fintools.statistics import skewness, kurtosis
+from fintools.statistics import skewness, excess_kurtosis
 
 
 def semi_deviation(returns: pd.DataFrame):
@@ -40,8 +40,8 @@ def parametric_VaR(returns, confidence_level=5, modified=True):
     if modified:
         # Modify Z score by skewness and kurtosis
         s = skewness(returns)
-        k = kurtosis(returns)
-        z += (z ** 2 - 1) * s / 6 + (z ** 3 - 3 * z) * (k - 3) / 24 - (2 * z ** 3 - 5 * z) * (s ** 2) / 36
+        k = excess_kurtosis(returns)
+        z += (z ** 2 - 1) * s / 6 + (z ** 3 - 3 * z) * k / 24 - (2 * z ** 3 - 5 * z) * (s ** 2) / 36
     return -(returns.mean() + z * returns.std(ddof=0))
 
 
