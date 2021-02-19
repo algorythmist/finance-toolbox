@@ -30,3 +30,12 @@ def load_small_large_cap_returns():
     # convert index to datetime and set the period to month
     returns.index = pd.to_datetime(returns.index, format='%Y%m').to_period('M')
     return returns
+
+
+def load_hfi_returns():
+    hfi = pd.read_csv(
+        os.path.join(INDUSTRY_DATA_DIR, 'edhec-hedgefundindices.csv'),
+        header=0, index_col=0, parse_dates=True)
+    hfi /= 100
+    hfi.index = hfi.index.to_period('M')
+    return hfi
