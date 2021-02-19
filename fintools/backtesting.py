@@ -1,8 +1,7 @@
-import pandas as pd
-
-from fintools.portfolio import portfolio_return
 from fintools.calculator import *
-from fintools.metrics import drawdown
+from fintools.metrics import *
+from fintools.portfolio import portfolio_return
+
 
 def backtest_buy_and_hold(portfolio_weights, returns):
     """
@@ -19,10 +18,11 @@ def backtest_buy_and_hold(portfolio_weights, returns):
     :return: the sequence of portfolio returns
     """
     portfolio_returns = (returns + 1).cumprod()
-    portfolio_returns = portfolio_returns.apply(lambda row: portfolio_return(weights=portfolio_weights, returns = row), axis=1)
+    portfolio_returns = portfolio_returns.apply(lambda row: portfolio_return(weights=portfolio_weights, returns=row),
+                                                axis=1)
     portfolio_returns = portfolio_returns.pct_change()
     # The first return is simply the weighted average of the initial returns
-    portfolio_returns.iloc[0] = portfolio_return(weights=portfolio_weights, returns = returns.iloc[0])
+    portfolio_returns.iloc[0] = portfolio_return(weights=portfolio_weights, returns=returns.iloc[0])
     return portfolio_returns
 
 
@@ -49,19 +49,21 @@ def collect_metrics(returns, risk_free_rate=0.0):
     annualized_return = returns.aggregate(annualize_returns, periods_in_year=12)
     annualized_volatility = returns.aggregate(annualize_volatility, periods_in_year=12)
     annualized_sharpe = returns.aggregate(annualized_sharpe_ratio, risk_free_rate=risk_free_rate, periods_in_year=12)
-    dd = returns.aggregate(lambda r: drawdown(r).max_drawdown)
-    skew = returns.skew()
+    dd = returns.agg(lambda r: drawdown(r).max_drawdown)
+    skewness = returns.skew()
     kurt = returns.kurt()
-    #TODO cf_var5 = r.aggregate(var_gaussian, modified=True)
-    #TODO hist_cvar5 = r.aggregate(cvar_historic)
+    cf_var5 = parametric_VaR(returns, confidence_level=5)
+    hist_var5 = historic_VaR(returns, confidence_level=5)
+    conditional_var5 = conditional_VaR(returns, confidence_level=5)
 
     result = {
         "annualized_return": annualized_return,
         "annualized_volatility": annualized_volatility,
-        "skewness": skew,
+        "skewness": skewness,
         "excess_kurtosis": kurt,
-        # "Cornish-Fisher VaR (5%)": cf_var5,
-        # "Historic CVaR (5%)": hist_cvar5,
+        "cornish_fisher_var": cf_var5,
+        "historic_var": hist_var5,
+        "conditional_var": conditional_var5,
         "sharpe_ratio": annualized_sharpe,
         "max_drawdown": dd
     }
