@@ -18,6 +18,18 @@ def test_parametric_VaR():
     var = parametric_VaR(hfi)
     assert 0.033094 == pytest.approx(var['CTA Global'], 0.001)
 
-def test_conditional_value_at_risk():
+
+def test_conditional_VaR():
     var = conditional_VaR(hfi)
     assert 0.041264 == pytest.approx(var['CTA Global'], 0.001)
+
+
+def test_drawdown():
+    returns = load_small_large_cap_returns()
+    small_cap_drawdown = drawdown(returns['SmallCap'])
+    large_cap_drawdown = drawdown(returns['LargeCap'])
+    assert (1110, 3) == small_cap_drawdown.history.shape
+    assert -0.8400 == pytest.approx(large_cap_drawdown.max_drawdown, 0.001)
+    assert -0.8330 == pytest.approx(small_cap_drawdown.max_drawdown, 0.001)
+    assert pd.Period('1932-05', 'M') == large_cap_drawdown.max_drawdown_index
+    assert pd.Period('1932-05', 'M') == small_cap_drawdown.max_drawdown_index

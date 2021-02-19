@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
+
 from fintools.statistics import skewness, kurtosis
+
 
 def semi_deviation(returns: pd.DataFrame):
     """
@@ -54,3 +56,36 @@ def conditional_VaR(returns, confidence_level=5):
         return returns.aggregate(conditional_VaR, confidence_level=confidence_level)
     is_beyond = returns <= - historic_VaR(returns, confidence_level)
     return -returns[is_beyond].mean()
+
+
+def drawdown(returns: pd.Series, initial_wealth=1000):
+    """
+    Takes a time series of asset returns
+    :param returns: historical returns sequence
+    :param initial_wealth: Initial wealth invested
+    :rtype: Drawdown
+    :return: a Drawdown object
+    """
+    wealth_index = initial_wealth * (1 + returns).cumprod()
+    previous_peaks = wealth_index.cummax()
+    drawdowns = (wealth_index - previous_peaks) / previous_peaks
+    return Drawdown(wealth_index, previous_peaks, drawdowns)
+
+
+class Drawdown:
+    """
+    History of drawdowns from a return sequence
+    """
+
+    def __init__(self, wealth, peaks, drawdowns):
+        self.wealth = wealth
+        self.peaks = peaks
+        self.drawdowns = drawdowns
+        self.history = pd.DataFrame({
+            "Wealth": wealth,
+            "Peaks": peaks,
+            "Drawdown": drawdowns
+        })
+        self.max_drawdown = drawdowns.min()
+        self.max_drawdown_index = drawdowns.idxmin()
+

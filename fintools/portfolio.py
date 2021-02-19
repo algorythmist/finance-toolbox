@@ -2,6 +2,7 @@ import numpy as np
 from scipy.optimize import minimize, LinearConstraint, Bounds
 from functools import partial
 
+
 def portfolio_return(weights, returns):
     """
     Compute the portfolio return given an array of returns
