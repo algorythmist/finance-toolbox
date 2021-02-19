@@ -1,7 +1,6 @@
 import pandas as pd
 
 from fintools.portfolio import portfolio_return
-from fintools.statistics import skewness, excess_kurtosis
 from fintools.calculator import *
 from fintools.metrics import drawdown
 
@@ -51,8 +50,8 @@ def collect_metrics(returns, risk_free_rate=0.0):
     annualized_volatility = returns.aggregate(annualize_volatility, periods_in_year=12)
     annualized_sharpe = returns.aggregate(annualized_sharpe_ratio, risk_free_rate=risk_free_rate, periods_in_year=12)
     dd = returns.aggregate(lambda r: drawdown(r).max_drawdown)
-    skew = returns.aggregate(skewness)
-    kurt = returns.aggregate(excess_kurtosis)
+    skew = returns.skew()
+    kurt = returns.kurt()
     #TODO cf_var5 = r.aggregate(var_gaussian, modified=True)
     #TODO hist_cvar5 = r.aggregate(cvar_historic)
 

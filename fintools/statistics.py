@@ -1,23 +1,5 @@
-import scipy.stats
 import pandas as pd
-
-
-def moment(data, n):
-    demeaned = data - data.mean()
-    sigma = data.std(ddof=0)
-    numerator = (demeaned**n).mean()
-    return numerator/(sigma**n)
-
-
-def skewness(data):
-    """
-    Alternative to scipy.stats.skew
-    """
-    return moment(data,3)
-
-
-def excess_kurtosis(data):
-    return moment(data,4) - 3.0
+import scipy.stats
 
 
 def is_normal(data: pd.Series, confidence_level=0.001):
