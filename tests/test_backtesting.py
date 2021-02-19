@@ -32,3 +32,11 @@ def test_buy_and_hold_vs_rebalance():
     rebalanced_returns = backtest_daily_rebalance(portfolio_weights, returns)
     rebalanced_wealth = final_wealth(rebalanced_returns)
     assert 6.23, pytest.approx(rebalanced_wealth, 0.001)
+
+    rebalanced_metrics = collect_metrics(rebalanced_returns, risk_free_rate=0.03)
+    assert -0.230842 == pytest.approx(rebalanced_metrics.max_drawdown, 0.001)
+    assert -0.340464 == pytest.approx(rebalanced_metrics.excess_kurtosis, abs=0.01)
+    assert 1.081874 == pytest.approx(rebalanced_metrics.sharpe_ratio, 0.001)
+    assert -0.079485 == pytest.approx(rebalanced_metrics.skewness, abs=0.001)
+    assert 0.180977 == pytest.approx(rebalanced_metrics.annualized_return, 0.001)
+    assert 0.139552 == pytest.approx(rebalanced_metrics.annualized_volatility, 0.001)
