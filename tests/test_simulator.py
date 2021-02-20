@@ -4,7 +4,7 @@ import pytest
 
 def test_monthly_rebalance():
     returns = read_returns()
-    simulator = BacktestingSimulator()
+    simulator = StrategySimulator()
     stats = simulator.simulate(returns=returns,initial_portfolio_weights=[0.5, 0.5], start_value=1)
     end_value = final_wealth(stats.return_history)
     assert 6.23 == pytest.approx(end_value, 0.001)
@@ -22,7 +22,7 @@ def test_monthly_rebalance():
 
 def test_buy_and_hold():
     returns = read_returns()
-    simulator = BacktestingSimulator(investment_strategy=NoRebalanceInvestmentStrategy(initial_weights=[0.5,0.5]))
+    simulator = StrategySimulator(investment_strategy=NoRebalanceInvestmentStrategy(initial_weights=[0.5, 0.5]))
     stats = simulator.simulate(returns=returns,initial_portfolio_weights=[0.5, 0.5], start_value=1)
     end_value = final_wealth(stats.return_history)
     assert 10.99 == pytest.approx(end_value, 0.001)

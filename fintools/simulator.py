@@ -33,7 +33,7 @@ class Stats:
         self.return_history.iloc[step] = preturn
 
 
-class BacktestingSimulator:
+class StrategySimulator:
 
     def __init__(self, investment_strategy: InvestmentStrategy = None):
         self.__investment_strategy = investment_strategy
@@ -48,13 +48,13 @@ class BacktestingSimulator:
         account_value = start_value
         stats = Stats(returns)
         for step in range(steps):
-            rets = returns.iloc[step]
-            preturn = portfolio_return(returns=rets, weights=portfolio_weights)
-            account_value = (1 + preturn) * account_value
+            asset_returns = returns.iloc[step]
+            portfolio_return = compute_portfolio_return(returns=asset_returns, weights=portfolio_weights)
+            account_value = (1 + portfolio_return) * account_value
             # update stats
-            stats.update(step, preturn, account_value)
+            stats.update(step, portfolio_return, account_value)
             # update weights
             if self.__investment_strategy:
-                portfolio_weights = self.__investment_strategy.update_portfolio_weighs(account_value, rets)
+                portfolio_weights = self.__investment_strategy.update_portfolio_weighs(account_value, asset_returns)
 
         return stats

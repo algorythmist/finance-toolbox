@@ -8,7 +8,7 @@ industry_returns = load_industry_data('ind30_m_vw_rets.csv') / 100
 def test_portfolio_return():
     r = [1, 2, 3]
     w = [3, 2, 1]
-    total_return = portfolio_return(w, r)
+    total_return = compute_portfolio_return(w, r)
     assert np.equal(10, total_return)
     assert np.equal(10, np.array(total_return))
 
@@ -17,7 +17,7 @@ def test_portfolio_variance():
     w = [0.5, 0.5]
     cov = [[2.5, 3.0],
            [3.0, 10.0]]
-    volatility = portfolio_variance(w, cov)
+    volatility = compute_portfolio_variance(w, cov)
     assert 2.150 == pytest.approx(volatility, 0.001)
 
 
@@ -30,7 +30,7 @@ def test_minimize_volatility():
     w = minimize_volatility(target_return, expected_returns, covariance)
     assert 0.47287631 == pytest.approx(w[0], 0.0001)
     assert 1 == w.sum()
-    vol = portfolio_variance(w, covariance)
+    vol = compute_portfolio_variance(w, covariance)
     assert 0.056163 == pytest.approx(vol, 0.0001)
 
 

@@ -3,7 +3,7 @@ from scipy.optimize import minimize, LinearConstraint, Bounds
 from functools import partial
 
 
-def portfolio_return(weights, returns):
+def compute_portfolio_return(weights, returns):
     """
     Compute the portfolio return given an array of returns
     :param weights: the weights of the portfolio
@@ -13,7 +13,7 @@ def portfolio_return(weights, returns):
     return np.array(weights).T @ np.array(returns)
 
 
-def portfolio_variance(weights, covariance):
+def compute_portfolio_variance(weights, covariance):
     """
     Compute the portfolio variance, given a covariance matrix
     :param weights: the weights of the portfolio
@@ -41,13 +41,13 @@ def minimize_volatility(target_return, expected_returns, covariance,
     # constraints
     return_equals_to_target = {
         'type': 'eq',
-        'fun': lambda w: target_return - portfolio_return(w, expected_returns)
+        'fun': lambda w: target_return - compute_portfolio_return(w, expected_returns)
     }
     weights_sum_to_1 = {
         'type': 'eq',
         'fun': lambda w: np.sum(w) - 1
     }
-    solution = minimize(fun=portfolio_variance,
+    solution = minimize(fun=compute_portfolio_variance,
                         method='SLSQP',
                         x0=initial_guess,
                         bounds=bounds,
@@ -58,8 +58,8 @@ def minimize_volatility(target_return, expected_returns, covariance,
 
 
 def sharpe_ratio(weights, expected_returns, covariance, risk_free_rate = 0):
-    excess_return = portfolio_return(weights, expected_returns) - risk_free_rate
-    volatility = portfolio_variance(weights, covariance)
+    excess_return = compute_portfolio_return(weights, expected_returns) - risk_free_rate
+    volatility = compute_portfolio_variance(weights, covariance)
     return -excess_return / volatility
 
 
@@ -113,10 +113,10 @@ class Portfolio:
             yield self.symbols[i], self.weights[i]
 
     def portfolio_return(self, returns):
-        return portfolio_return(self.weights, returns)
+        return compute_portfolio_return(self.weights, returns)
 
     def portfolio_variance(self, covariance):
-        return portfolio_variance(self.weights, covariance)
+        return compute_portfolio_variance(self.weights, covariance)
 
     def enc(self):
         """
