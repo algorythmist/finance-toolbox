@@ -17,7 +17,7 @@ class NoRebalanceInvestmentStrategy(InvestmentStrategy):
 
     def update_portfolio_weighs(self, account_value, returns):
         denominator = self.__previous_weights @ (1+returns)
-        new_weights =  np.multiply(self.__previous_weights, (1+returns))/denominator
+        new_weights = np.multiply(self.__previous_weights, (1+returns))/denominator
         self.__previous_weights = new_weights
         return new_weights
 
