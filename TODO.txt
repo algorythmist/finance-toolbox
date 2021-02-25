@@ -1,0 +1,12 @@
+Infrastructure
+- Enforce coverage threshold in CI
+- Release to PyPI
+- Automate releases with CI
+
+Features
+- Monte Carlo simulation with generated prices
+- MC simulation with bootstap prices
+- CPPI simulator
+- Resolve TODOs
+- Add notebooks with demos <- matplotlib
+

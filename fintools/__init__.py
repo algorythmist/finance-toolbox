@@ -6,4 +6,4 @@ from .metrics import *
 from .portfolio import *
 from .simulator import *
 from .statistics import *
-from .visualization import *
+from .visualizations import *

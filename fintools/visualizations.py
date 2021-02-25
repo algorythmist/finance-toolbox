@@ -1,29 +1,30 @@
+import numpy as np
 import pandas as pd
-from ..portfolio import *
+from fintools import *
 
 
-def plot_efficiency_frontier(n_points, expected_return, covariance, risk_free_rate=0,
-            style='.-',
-            legend=False,
-            show_cml=False,
-            show_ew=False,
-            show_gmv=False):
+def plot_efficiency_frontier(expected_return, covariance,
+                             risk_free_rate=0,
+                             n_points =20,
+                             style='.-',
+                             legend=False,
+                             show_cml=False,
+                             show_ew=False,
+                             show_gmv=False):
     """
     Plots the multi-asset efficient frontier
-    :param n_points:
+
     :param expected_return:
     :param covariance:
+    :param risk_free_rate: the risk free rare
+    :param n_points: points to evaluate
     :param style:
     :param show_cml: Show the capital market line
     :param show_ew : Show equally weighted portfolio
     :param show_gmv: Show the global minimum volatility portfolio
     """
-
-    def optimal_weights(n_points, expected_return, covariance):
-        target_returns = np.linspace(expected_return.min(), expected_return.max(), n_points)
-        return [minimize_volatility(tr, expected_return, covariance) for tr in target_returns]
-
-    weights = optimal_weights(n_points, expected_return, covariance)
+    target_returns = np.linspace(expected_return.min(), expected_return.max(), n_points)
+    weights = [minimize_volatility(tr, expected_return, covariance) for tr in target_returns]
     rets = [compute_portfolio_return(w, expected_return) for w in weights]
     vols = [compute_portfolio_variance(w, covariance) for w in weights]
     ef = pd.DataFrame({
