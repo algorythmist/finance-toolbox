@@ -1,6 +1,7 @@
+from functools import partial
+
 import numpy as np
 from scipy.optimize import minimize, LinearConstraint, Bounds
-from functools import partial
 
 
 def compute_portfolio_return(weights, returns):
@@ -57,7 +58,7 @@ def minimize_volatility(target_return, expected_returns, covariance,
     return solution.x
 
 
-def sharpe_ratio(weights, expected_returns, covariance, risk_free_rate = 0):
+def sharpe_ratio(weights, expected_returns, covariance, risk_free_rate=0):
     excess_return = compute_portfolio_return(weights, expected_returns) - risk_free_rate
     volatility = compute_portfolio_variance(weights, covariance)
     return -excess_return / volatility
@@ -77,7 +78,8 @@ def maximize_sharpe_ratio(expected_returns, covariance,
     :return: the optimal weights
     """
 
-    sharpe = partial(sharpe_ratio, expected_returns = expected_returns, covariance = covariance, risk_free_rate = risk_free_rate)
+    sharpe = partial(sharpe_ratio, expected_returns=expected_returns, covariance=covariance,
+                     risk_free_rate=risk_free_rate)
     n = len(expected_returns)
     guess = np.repeat(1 / n, n)
     constraints = []
@@ -93,6 +95,11 @@ def maximize_sharpe_ratio(expected_returns, covariance,
                         bounds=bounds,
                         options={'disp': debug})
     return solution.x
+
+
+def global_minimum_variance_portfolio(covariance):
+    n = covariance.shape[0]
+    return maximize_sharpe_ratio(np.repeat(1, n), covariance)
 
 
 class Portfolio:

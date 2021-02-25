@@ -47,6 +47,18 @@ def test_maximize_sharpe_ratio():
     assert np.all([expected[i] == pytest.approx(w[i], 0.00001) for i in range(0, len(expected))])
 
 
+def test_global_minimum_variance_portfolio():
+    assets = ['Games', 'Smoke', 'Beer', 'Food']
+    returns = industry_returns["1996":"2000"][assets]
+    # expected_returns = annualize_returns(returns, 12)
+    covariance = returns.cov()
+    # risk_free_rate = 0.01
+    w = global_minimum_variance_portfolio(covariance)
+    assert 1 == w.sum()
+    expected = [0.37456, 0.07577, 0.0, 0.54966]
+    assert np.all([expected[i] == pytest.approx(w[i], 0.0001) for i in range(0, len(expected))])
+
+
 def test_portfolio_class():
     symbols = ['US', 'IN', 'BD']
     weights = [.5, .3, .2]
