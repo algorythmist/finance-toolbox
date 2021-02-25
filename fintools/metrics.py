@@ -56,7 +56,7 @@ def conditional_VaR(returns, confidence_level=5):
     return -returns[is_beyond].mean()
 
 
-def drawdown(returns: pd.Series, initial_wealth=1000):
+def compute_drawdown(returns: pd.Series, initial_wealth=1000):
     """
     Takes a time series of asset returns
     :param returns: historical returns sequence
@@ -79,11 +79,13 @@ class Drawdown:
         self.wealth = wealth
         self.peaks = peaks
         self.drawdowns = drawdowns
-        self.history = pd.DataFrame({
-            "Wealth": wealth,
-            "Peaks": peaks,
-            "Drawdown": drawdowns
+        self.__df = pd.DataFrame({
+            "wealth": wealth,
+            "peaks": peaks,
+            "drawdown": drawdowns
         })
         self.max_drawdown = drawdowns.min()
         self.max_drawdown_index = drawdowns.idxmin()
 
+    def as_data_frame(self):
+        return self.__df

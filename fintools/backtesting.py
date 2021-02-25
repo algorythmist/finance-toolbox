@@ -49,7 +49,7 @@ def collect_metrics(returns, risk_free_rate=0.0):
     annualized_return = returns.aggregate(annualize_returns, periods_in_year=12)
     annualized_volatility = returns.aggregate(annualize_volatility, periods_in_year=12)
     annualized_sharpe = returns.aggregate(annualized_sharpe_ratio, risk_free_rate=risk_free_rate, periods_in_year=12)
-    dd = returns.agg(lambda r: drawdown(r).max_drawdown)
+    dd = returns.agg(lambda r: compute_drawdown(r).max_drawdown)
     skewness = returns.skew()
     kurt = returns.kurt()
     cf_var5 = parametric_VaR(returns, confidence_level=5)

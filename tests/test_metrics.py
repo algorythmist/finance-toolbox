@@ -24,11 +24,14 @@ def test_conditional_VaR():
     assert 0.041264 == pytest.approx(var['CTA Global'], 0.001)
 
 
-def test_drawdown():
+def test_compute_drawdown():
     returns = load_small_large_cap_returns()
-    small_cap_drawdown = drawdown(returns['SmallCap'])
-    large_cap_drawdown = drawdown(returns['LargeCap'])
-    assert (1110, 3) == small_cap_drawdown.history.shape
+    small_cap_drawdown = compute_drawdown(returns['SmallCap'])
+    large_cap_drawdown = compute_drawdown(returns['LargeCap'])
+    assert (1110, 3) == small_cap_drawdown.as_data_frame().shape
+    assert small_cap_drawdown.drawdowns is not None
+    assert small_cap_drawdown.wealth is not None
+    assert small_cap_drawdown.peaks is not None
     assert -0.8400 == pytest.approx(large_cap_drawdown.max_drawdown, 0.001)
     assert -0.8330 == pytest.approx(small_cap_drawdown.max_drawdown, 0.001)
     assert pd.Period('1932-05', 'M') == large_cap_drawdown.max_drawdown_index
