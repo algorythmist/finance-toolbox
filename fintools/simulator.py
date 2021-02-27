@@ -6,20 +6,22 @@ from fintools import *
 class InvestmentStrategy(ABC):
 
     @abstractmethod
-    def update_portfolio_weighs(self, account_value, returns):
+    def update_portfolio_weighs(self, current_weights, account_value, returns):
+        """
+        Update portfolio weights based on an investment strategy
+        :param current_weights: current portfolio weights
+        :param account_value:current account balance
+        :param returns: last period returns
+        :return: the adjusted portfolio weights
+        """
         pass
 
 
 class NoRebalanceInvestmentStrategy(InvestmentStrategy):
 
-    def __init__(self, initial_weights):
-        self.__previous_weights = initial_weights
-
-    def update_portfolio_weighs(self, account_value, returns):
-        denominator = self.__previous_weights @ (1+returns)
-        new_weights = np.multiply(self.__previous_weights, (1+returns))/denominator
-        self.__previous_weights = new_weights
-        return new_weights
+    def update_portfolio_weighs(self, current_weights, account_value, returns):
+        denominator = current_weights @ (1+returns)
+        return np.multiply(current_weights, (1+returns))/denominator
 
 
 class Stats:
@@ -41,11 +43,11 @@ class StrategySimulator:
     def simulate(self,
                  returns,
                  initial_portfolio_weights,
-                 start_value):
+                 initial_balance):
         dates = returns.index
         steps = len(dates)
         portfolio_weights = initial_portfolio_weights
-        account_value = start_value
+        account_value = initial_balance
         stats = Stats(returns)
         for step in range(steps):
             asset_returns = returns.iloc[step]
@@ -55,6 +57,7 @@ class StrategySimulator:
             stats.update(step, portfolio_return, account_value)
             # update weights
             if self.__investment_strategy:
-                portfolio_weights = self.__investment_strategy.update_portfolio_weighs(account_value, asset_returns)
+                portfolio_weights = self.__investment_strategy\
+                    .update_portfolio_weighs(portfolio_weights, account_value, asset_returns)
 
         return stats
