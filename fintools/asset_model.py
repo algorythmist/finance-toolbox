@@ -1,6 +1,18 @@
 import numpy as np
 import pandas as pd
 
+def generate_gbm_returns(mu, sigma, samples, scenarios, random_state=0):
+    """
+
+    :param mu: vector of expected returns
+    :param sigma: vector of variances - returns are assumed uncorrelated
+    :param samples: number of samples in each scenario
+    :param scenarios: number of scenarios
+    :param random_state: random seed
+    :return: a data frame of sample returns of shape (len(mu), samples, scenarios)
+    """
+    #TODO
+    pass
 
 # TODO: use random generator with seed
 def geometric_brownian_motion(mu, sigma,

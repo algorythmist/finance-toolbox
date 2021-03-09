@@ -3,6 +3,27 @@ import pandas as pd
 
 from asset_model import geometric_brownian_motion
 
+#TODO
+# class CcpiStrategy(InvestmentStrategy):
+#
+#     def __init__(self, drawdown=None, multiplier=3):
+#         self.drawdown = drawdown
+#         self.multiplier = multiplier
+#
+#     def update_portfolio_weighs(self, current_weights, account_value, returns):
+#         risky_weight = current_weights[0]
+#         safe_weight = current_weights[1]
+#         #TODO
+#         # if self.drawdown is not None:
+#         #     peak = np.maximum(peak, account_value)
+#         #     floor_value = peak * (1 - drawdown)
+#         cushion = (account_value - floor_value) / account_value
+#         risky_weight = self.multiplier * cushion
+#         risky_weight = np.minimum(risky_weight, 1)
+#         risky_weight = np.maximum(risky_weight, 0)
+#         safe_weight = 1 - risky_weight
+#         return np.array(risky_weight, safe_weight)
+
 
 def backtest_cppi(risky_returns,
                   safe_returns=None,
