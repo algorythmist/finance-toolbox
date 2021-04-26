@@ -16,7 +16,8 @@ def compute_compound_return(returns):
     :param returns: vector of returns
     :return: the compounded return
     """
-    return (returns + 1).prod() - 1
+    # This implementation uses sum instead of prod and is faster than: (returns + 1).prod() - 1
+    return np.expm1(np.log1p(returns).sum())
 
 
 def annualized_return(r, periods_in_year):
@@ -90,3 +91,5 @@ def geometric_return(returns):
     return gmean(np.array(returns)+1)-1
 
 
+def resample_returns(returns, period_type='M'):
+    return returns.resample(period_type).apply(compute_compound_return).to_period(period_type)
