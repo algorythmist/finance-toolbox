@@ -18,7 +18,7 @@ def load_fff_returns_monthly(filename='F-F_Research_Data_5_Factors_2x3_monthly.c
 
 def load_fff_returns_daily(filename='F-F_Research_Data_5_Factors_2x3_daily.csv'):
     """
-    Load the Fama-French Research Factor Monthly Dataset
+    Load the Fama-French Research Factor Daily Dataset
     """
     returns = pd.read_csv(os.path.join(FACTOR_DATA_DIR, filename),
                           header=0, index_col=0) / 100

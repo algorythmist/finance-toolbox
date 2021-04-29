@@ -120,9 +120,17 @@ class Portfolio:
             yield self.symbols[i], self.weights[i]
 
     def portfolio_return(self, returns):
+        """
+        Given a sequence of returns for each asset,
+        :return: The sequence of portfolio returns
+        """
         return compute_portfolio_return(self.weights, returns)
 
     def portfolio_variance(self, covariance):
+        """
+        Given an estimate of the covariance matrix,
+        :return: The total portfolio variance
+        """
         return compute_portfolio_variance(self.weights, covariance)
 
     def enc(self):
