@@ -18,8 +18,9 @@ def backtest_buy_and_hold(portfolio_weights, returns):
     :return: the sequence of portfolio returns
     """
     portfolio_returns = (returns + 1).cumprod()
-    portfolio_returns = portfolio_returns.apply(lambda row: compute_portfolio_return(weights=portfolio_weights, returns=row),
-                                                axis=1)
+    portfolio_returns = portfolio_returns.apply(
+        lambda row: compute_portfolio_return(weights=portfolio_weights, returns=row),
+        axis=1)
     portfolio_returns = portfolio_returns.pct_change()
     # The first return is simply the weighted average of the initial returns
     portfolio_returns.iloc[0] = compute_portfolio_return(weights=portfolio_weights, returns=returns.iloc[0])
@@ -73,3 +74,4 @@ def collect_metrics(returns, risk_free_rate=0.0):
         return pd.Series(result)
     else:
         return result
+

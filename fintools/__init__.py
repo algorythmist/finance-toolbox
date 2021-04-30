@@ -1,3 +1,4 @@
+from .allocation_scheme import *
 from .asset_model import *
 from .backtesting import *
 from .calculator import *

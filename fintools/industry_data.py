@@ -15,6 +15,35 @@ def load_industry_data(filename):
     return data
 
 
+def load_industry_returns(filename='ind30_m_vw_rets.csv'):
+    return load_industry_data(filename) / 100
+
+
+def load_firms(filename='ind30_m_nfirms.csv'):
+    return load_industry_data(filename)
+
+
+def load_sizes(filename='ind30_m_size.csv'):
+    return load_industry_data(filename)
+
+
+def load_market_caps(size=30, weights=False):
+    """
+    Load the industry portfolio data and derive the market caps
+    """
+    firms_filename = f'ind{size}_m_nfirms.csv'
+    ind_nfirms = load_firms(firms_filename)
+    size_filename = f'ind{size}_m_size.csv'
+    ind_size = load_sizes(size_filename)
+    ind_mktcap = ind_nfirms * ind_size
+    if weights:
+        total_mktcap = ind_mktcap.sum(axis=1)
+        ind_capweight = ind_mktcap.divide(total_mktcap, axis="rows")
+        return ind_capweight
+    #else
+    return ind_mktcap
+
+
 def load_small_large_cap_returns():
     returns = pd.read_csv(
         os.path.join(INDUSTRY_DATA_DIR, 'Portfolios_Formed_on_ME_monthly_EW.csv'),
