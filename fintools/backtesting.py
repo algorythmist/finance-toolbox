@@ -1,7 +1,7 @@
 from fintools.calculator import *
 from fintools.metrics import *
 from fintools.portfolio import compute_portfolio_return
-
+from fintools.allocation_scheme import *
 
 def backtest_buy_and_hold(portfolio_weights, returns):
     """
@@ -39,6 +39,24 @@ def backtest_daily_rebalance(portfolio_weights, returns):
 
 def final_wealth(portfolio_returns, initial_investment=1.0):
     return initial_investment * (1 + portfolio_returns).prod()
+
+
+def backtest_allocation(returns, estimation_window=60,
+                        allocation_scheme: AllocationScheme = EquallyWeightedAllocationScheme()):
+    """
+    Backtests a given allocation scheme, given some parameters:
+    returns : asset returns to use to build the portfolio
+    estimation_window: the window to use to estimate parameters
+    weighting: the weighting scheme to use, must be a function that takes "r", and a variable number of keyword-value arguments
+    """
+    n_periods = returns.shape[0]
+    # return windows
+    windows = [(start, start + estimation_window) for start in range(n_periods - estimation_window)]
+    weights = [allocation_scheme.get_allocation(returns.iloc[win[0]:win[1]]) for win in windows]
+    # convert List of weights to DataFrame
+    weights = pd.DataFrame(weights, index=returns.iloc[estimation_window:].index, columns=returns.columns)
+    returns = (weights * returns).sum(axis="columns", min_count=1)
+    return returns
 
 
 def collect_metrics(returns, risk_free_rate=0.0):

@@ -44,6 +44,19 @@ def test_buy_and_hold_vs_rebalance():
     assert 0.052304 == pytest.approx(rebalanced_metrics.historic_var, 0.001)
 
 
+def test_backtest_allocation_scheme():
+    industry_returns = load_industry_returns('ind30_m_vw_rets.csv')['2000':]
+    cap_weights = load_market_caps(size=30, weights=True)['2000':]
+    equally_weighted_returns = backtest_allocation(industry_returns)
+    cap_weighted_returns = backtest_allocation(industry_returns,
+                                               allocation_scheme=CapWeightedAllocationScheme(cap_weights=cap_weights))
+    btr = pd.DataFrame({"EW": equally_weighted_returns, "CW": cap_weighted_returns})
+    wealth_index = (1 + btr).cumprod()
+    equal_vs_cap = (wealth_index["EW"] > wealth_index["CW"]).sum() * 100 / wealth_index.shape[0]
+    # equally weighted wealth beats cap-weighted over 70% of the time
+    assert 73.7 == pytest.approx(equal_vs_cap, 0.1)
+
+
 def read_returns():
     aapl = read_prices('AAPL.monthly.20000101-20201231.csv')
     aapl = aapl.rename(columns={'Adj Close': 'AAPL'})
