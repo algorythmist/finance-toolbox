@@ -3,7 +3,7 @@ import pytest
 
 
 def test_equally_weighted():
-    returns = load_industry_returns('ind30_m_ew_rets.csv')['2000']
+    returns = load_industry_returns('ind30_m_ew_rets.csv').loc['2000']
     scheme = EquallyWeightedAllocationScheme()
     allocation = scheme.get_allocation(returns)
     assert 30 == len(allocation)
@@ -11,7 +11,7 @@ def test_equally_weighted():
         assert 0.033333 == pytest.approx(a, 0.0001)
 
     #Specify a cap threshold
-    cap_weights = load_market_caps('30', weights=True)['2000']
+    cap_weights = load_market_caps('30', weights=True).loc['2000']
     scheme = EquallyWeightedAllocationScheme(cap_weights=cap_weights, microcap_threshold=0.01)
     allocation = scheme.get_allocation(returns)
     assert 30 == len(allocation)
@@ -23,8 +23,8 @@ def test_equally_weighted():
 
 
 def test_cap_weighted():
-    returns = load_industry_returns('ind30_m_ew_rets.csv')['2000']
-    cap_weights = load_market_caps('30', weights=True)['2000']
+    returns = load_industry_returns('ind30_m_ew_rets.csv').loc['2000']
+    cap_weights = load_market_caps('30', weights=True).loc['2000']
     scheme = CapWeightedAllocationScheme(cap_weights=cap_weights)
     allocation = scheme.get_allocation(returns)
     assert 30 == len(allocation)

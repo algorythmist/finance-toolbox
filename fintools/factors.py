@@ -21,7 +21,7 @@ def french_fama_regression(portfolio_returns, start_index, end_index,
     """
     fff = load_fff_returns_monthly()[start_index:end_index]
     excess_returns = portfolio_returns[start_index:end_index] - fff[['RF']].values
-    excess_market = fff[['Mkt-RF']]
+    excess_market = fff[['Mkt-RF']].copy()
     exp_var = excess_market
     exp_var['Alpha'] = 1
     if regression_type is RegressionType.THREE_FACTOR or regression_type is RegressionType.FIVE_FACTOR:
