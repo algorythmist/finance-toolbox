@@ -1,6 +1,9 @@
-ipython
+jupyter
 matplotlib
 numpy
 pandas
+pytest
 scipy
+sklearn
 statsmodels
+

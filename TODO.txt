@@ -4,6 +4,7 @@ Infrastructure
 - Automate releases with CI
 
 Features
+- Robust Covariance estimation
 - Monte Carlo simulation with generated prices
 - MC simulation with bootstap prices
 - CPPI simulator
