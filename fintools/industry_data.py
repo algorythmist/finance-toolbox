@@ -8,6 +8,11 @@ PRICE_DATA_DIR = os.path.join(ROOT_DIR, '../data/prices')
 
 
 def load_industry_data(filename: str) -> pd.DataFrame:
+    """
+    Load any French Fama industry file from the data directory
+    :param filename: name of the file
+    :return: A data frame with the contents
+    """
     data = pd.read_csv(os.path.join(INDUSTRY_DATA_DIR, filename),
                        header=0, index_col=0, parse_dates=True)
     data.index = pd.to_datetime(data.index, format='%Y%m').to_period('M')
