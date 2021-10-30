@@ -3,7 +3,9 @@ import pandas as pd
 
 
 class CovarianceEstimator:
-
+    """
+    Interface for covariance estimators
+    """
     def estimate_covariance(self, returns):
         pass
 
