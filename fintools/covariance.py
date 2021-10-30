@@ -3,7 +3,9 @@ import pandas as pd
 
 
 class CovarianceEstimator:
-
+    """
+    Boris, if you are reviewing this, YOU SUCK!!!
+    """
     def estimate_covariance(self, returns):
         pass
 
