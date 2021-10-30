@@ -7,7 +7,7 @@ INDUSTRY_DATA_DIR = os.path.join(ROOT_DIR, '../data/industry')
 PRICE_DATA_DIR = os.path.join(ROOT_DIR, '../data/prices')
 
 
-def load_industry_data(filename):
+def load_industry_data(filename: str) -> pd.DataFrame:
     data = pd.read_csv(os.path.join(INDUSTRY_DATA_DIR, filename),
                        header=0, index_col=0, parse_dates=True)
     data.index = pd.to_datetime(data.index, format='%Y%m').to_period('M')
@@ -15,15 +15,30 @@ def load_industry_data(filename):
     return data
 
 
-def load_industry_returns(filename='ind30_m_vw_rets.csv'):
+def load_industry_returns(filename: str = 'ind30_m_vw_rets.csv') -> pd.DataFrame:
+    """
+    Load French Fama industry returns file
+    :param filename: specific industry returns file to load
+    :return: A data frame containing the returns
+    """
     return load_industry_data(filename) / 100
 
 
-def load_firms(filename='ind30_m_nfirms.csv'):
+def load_firms(filename: str = 'ind30_m_nfirms.csv') -> pd.DataFrame:
+    """
+    Load French Fama firms per industry aggregates
+    :param filename: specific file to load
+    :return:  A data frame containing the aggregates
+    """
     return load_industry_data(filename)
 
 
-def load_sizes(filename='ind30_m_size.csv'):
+def load_sizes(filename: str = 'ind30_m_size.csv') -> pd.DataFrame:
+    """
+        Load French Fama firms per industry size
+        :param filename: specific file to load
+        :return:  A data frame containing the industry sizes
+        """
     return load_industry_data(filename)
 
 
@@ -40,7 +55,7 @@ def load_market_caps(size=30, weights=False):
         total_mktcap = ind_mktcap.sum(axis=1)
         ind_capweight = ind_mktcap.divide(total_mktcap, axis="rows")
         return ind_capweight
-    #else
+    # else
     return ind_mktcap
 
 
