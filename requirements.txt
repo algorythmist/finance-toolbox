@@ -2,6 +2,7 @@ jupyter
 matplotlib
 numpy
 pandas
+pandas-datareader
 pytest
 scipy
 statsmodels
