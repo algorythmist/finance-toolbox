@@ -91,7 +91,7 @@ def load_hfi_returns():
     return hfi
 
 
-def read_prices(filename):
+def load_prices(filename):
     return pd.read_csv(os.path.join(PRICE_DATA_DIR, filename),
                        index_col="Date",
                        parse_dates=True,

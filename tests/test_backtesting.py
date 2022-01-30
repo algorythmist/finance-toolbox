@@ -58,9 +58,9 @@ def test_backtest_allocation_scheme():
 
 
 def read_returns():
-    aapl = read_prices('AAPL.monthly.20000101-20201231.csv')
+    aapl = load_prices('AAPL.monthly.20000101-20201231.csv')
     aapl = aapl.rename(columns={'Adj Close': 'AAPL'})
-    bnd = read_prices('BND.monthly.20000101-20201231.csv')
+    bnd = load_prices('BND.monthly.20000101-20201231.csv')
     bnd = bnd.rename(columns={'Adj Close': 'BND'})
     prices = aapl.join(bnd).dropna()
     prices = prices['2009-12-31':'2020-12-31']
