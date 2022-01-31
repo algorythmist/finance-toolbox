@@ -40,10 +40,10 @@ def load_firms(filename: str = 'ind30_m_nfirms.csv') -> pd.DataFrame:
 
 def load_sizes(filename: str = 'ind30_m_size.csv') -> pd.DataFrame:
     """
-        Load French Fama firms per industry size
-        :param filename: specific file to load
-        :return:  A data frame containing the industry sizes
-        """
+    Load French Fama firms per industry size
+    :param filename: specific file to load
+    :return:  A data frame containing the industry sizes
+    """
     return load_industry_data(filename)
 
 

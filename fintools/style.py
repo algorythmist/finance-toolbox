@@ -31,7 +31,8 @@ def style_analysis(dependent_variable, explanatory_variables):
                         'fun': lambda weights: np.sum(weights) - 1
                         }
     solution = minimize(portfolio_tracking_error, init_guess,
-                        args=(dependent_variable, explanatory_variables,),
+                        # squeeze converts to series
+                        args=(dependent_variable.squeeze(), explanatory_variables,),
                         method='SLSQP',
                         options={'disp': False},
                         constraints=(weights_sum_to_1,),

@@ -15,6 +15,7 @@ def load_daily_prices(symbol, from_date, to_date):
                       start=from_date, end=to_date,
                       data_source='yahoo')
 
+
 def download_daily_prices(symbol, from_date, to_date, filename=None):
     """
     Load prices from yahoo and store them in CSV
