@@ -3,6 +3,7 @@ from fintools.metrics import *
 from fintools.portfolio import compute_portfolio_return
 from fintools.allocation_scheme import *
 
+
 def backtest_buy_and_hold(portfolio_weights, returns):
     """
     Buy and Hold
