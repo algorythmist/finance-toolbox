@@ -4,5 +4,6 @@ numpy
 pandas
 pandas-datareader
 pytest
+scikit-learn
 scipy
 statsmodels
