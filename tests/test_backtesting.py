@@ -1,6 +1,7 @@
 import pytest
 
 from fintools import *
+from fintools import collect_metrics
 
 
 def test_buy_and_hold_vs_rebalance():

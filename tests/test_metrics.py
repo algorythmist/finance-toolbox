@@ -1,5 +1,6 @@
-from fintools import *
 import pytest
+
+from fintools import *
 
 hfi = load_hfi_returns()
 

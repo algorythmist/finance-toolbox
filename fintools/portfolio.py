@@ -1,5 +1,6 @@
 from functools import partial
 
+import pandas as pd
 import numpy as np
 from scipy.optimize import minimize, LinearConstraint, Bounds
 
@@ -11,7 +12,10 @@ def compute_portfolio_return(weights, returns):
     :param returns: the array of returns corresponding to each asset
     :return: the portfolio return
     """
-    return np.array(weights).T @ np.array(returns)
+    if isinstance(returns, pd.DataFrame):
+        return returns.dot(weights)
+    else:
+        return np.array(weights).T @ np.array(returns)
 
 
 def compute_portfolio_variance(weights, covariance):
@@ -69,7 +73,7 @@ def maximize_sharpe_ratio(expected_returns, covariance,
                           targeted_annual_return=None,
                           debug=False):
     """
-    Find the portfolio weights that maximize the sharpe ration of excess returns
+    Find the portfolio weights that maximize the sharpe ratio of excess returns
     :param expected_returns: The vector of expected returns
     :param covariance: The covariance matrix of assets
     :param risk_free_rate: the risk free rate (default 0)
@@ -78,7 +82,9 @@ def maximize_sharpe_ratio(expected_returns, covariance,
     :return: the optimal weights
     """
 
-    sharpe = partial(sharpe_ratio, expected_returns=expected_returns, covariance=covariance,
+    sharpe = partial(sharpe_ratio,
+                     expected_returns=expected_returns,
+                     covariance=covariance,
                      risk_free_rate=risk_free_rate)
     n = len(expected_returns)
     guess = np.repeat(1 / n, n)

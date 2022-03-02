@@ -1,6 +1,9 @@
 import numpy as np
+
 import pandas as pd
 from scipy.stats import norm, skew, kurtosis
+
+from fintools import annualize_returns, annualize_volatility, annualized_sharpe_ratio
 
 
 def semi_deviation(returns: pd.DataFrame):
@@ -89,3 +92,38 @@ class Drawdown:
 
     def as_data_frame(self):
         return self.__df
+
+
+def collect_metrics(returns, risk_free_rate=0.0):
+    """
+    Return a DataFrame that contains aggregated summary stats for the returns
+    :param: returns: A vector or Data Frame of returns
+    :param: risk_free_rate: The risk free rate (constant)
+    """
+    annualized_return = returns.aggregate(annualize_returns, periods_in_year=12)
+    annualized_volatility = returns.aggregate(annualize_volatility, periods_in_year=12)
+    annualized_sharpe = returns.aggregate(annualized_sharpe_ratio, risk_free_rate=risk_free_rate, periods_in_year=12)
+    dd = returns.agg(lambda r: compute_drawdown(r).max_drawdown)
+    skewness = returns.skew()
+    kurt = returns.kurt()
+    cf_var5 = parametric_VaR(returns, confidence_level=5)
+    hist_var5 = historic_VaR(returns, confidence_level=5)
+    conditional_var5 = conditional_VaR(returns, confidence_level=5)
+
+    result = {
+        "annualized_return": annualized_return,
+        "annualized_volatility": annualized_volatility,
+        "skewness": skewness,
+        "excess_kurtosis": kurt,
+        "cornish_fisher_var": cf_var5,
+        "historic_var": hist_var5,
+        "conditional_var": conditional_var5,
+        "sharpe_ratio": annualized_sharpe,
+        "max_drawdown": dd
+    }
+    if isinstance(returns, pd.DataFrame):
+        return pd.DataFrame(result)
+    elif isinstance(returns, pd.Series):
+        return pd.Series(result)
+    else:
+        return result
