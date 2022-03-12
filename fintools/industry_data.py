@@ -83,6 +83,10 @@ def load_small_large_cap_returns():
 
 
 def load_hfi_returns():
+    """
+    Load returns of Hedge Fund Indices
+    :return: A data frame with historical HF returns
+    """
     hfi = pd.read_csv(
         os.path.join(INDUSTRY_DATA_DIR, 'edhec-hedgefundindices.csv'),
         header=0, index_col=0, parse_dates=True)
