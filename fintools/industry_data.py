@@ -14,7 +14,8 @@ def load_industry_data(filename: str) -> pd.DataFrame:
     :return: A data frame with the contents
     """
     data = pd.read_csv(os.path.join(INDUSTRY_DATA_DIR, filename),
-                       header=0, index_col=0, parse_dates=True)
+                       header=0, index_col=0, parse_dates=True,
+                       infer_datetime_format=True)
     data.index = pd.to_datetime(data.index, format='%Y%m').to_period('M')
     data.columns = data.columns.str.strip()
     return data
@@ -89,7 +90,7 @@ def load_hfi_returns():
     """
     hfi = pd.read_csv(
         os.path.join(INDUSTRY_DATA_DIR, 'edhec-hedgefundindices.csv'),
-        header=0, index_col=0, parse_dates=True)
+        header=0, index_col=0, parse_dates=True, infer_datetime_format=True)
     hfi /= 100
     hfi.index = hfi.index.to_period('M')
     return hfi
