@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm, skew, kurtosis
 
-from fintools import annualize_returns, annualize_volatility, annualized_sharpe_ratio
+from fintools import annualize_returns, annualize_volatility, annualized_sharpe_ratio, compute_compound_return
 
 
 def semi_deviation(returns: pd.DataFrame):
@@ -100,6 +100,7 @@ def collect_metrics(returns, risk_free_rate=0.0):
     :param: returns: A vector or Data Frame of returns
     :param: risk_free_rate: The risk free rate (constant)
     """
+    compound_return = compute_compound_return(returns)
     annualized_return = returns.aggregate(annualize_returns, periods_in_year=12)
     annualized_volatility = returns.aggregate(annualize_volatility, periods_in_year=12)
     annualized_sharpe = returns.aggregate(annualized_sharpe_ratio, risk_free_rate=risk_free_rate, periods_in_year=12)
@@ -111,6 +112,7 @@ def collect_metrics(returns, risk_free_rate=0.0):
     conditional_var5 = conditional_VaR(returns, confidence_level=5)
 
     result = {
+        "compound_return": compound_return,
         "annualized_return": annualized_return,
         "annualized_volatility": annualized_volatility,
         "skewness": skewness,

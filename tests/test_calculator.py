@@ -14,6 +14,13 @@ def test_compute_returns():
     assert 0.136023 == pytest.approx(compound['ORANGE'], 0.0001)
 
 
+def test_compute_value():
+    returns = [0.2, 0.2, 0.2, 0.2, 0.2]
+    v1 = compute_value(returns)
+    expected = [1.2, 1.44, 1.728, 2.0736, 2.48832]
+    assert all([a == b for a, b in zip(v1, expected)])
+
+
 def test_annualized_return():
     r_monthly = 0.01
     assert 0.1268 == pytest.approx(annualized_monthly_return(r_monthly), 0.001)
