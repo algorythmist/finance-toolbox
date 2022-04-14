@@ -2,11 +2,11 @@ import pytest
 
 from fintools.calculator import resample_returns
 from fintools.factors import french_fama_regression, RegressionType
-from fintools.industry_data import read_prices
+from fintools.industry_data import load_prices
 
 
 def test_factors():
-    brka_d = read_prices('brka_d_ret.csv')
+    brka_d = load_prices('brka_d_ret.csv')
     brka_m = resample_returns(brka_d, 'M')
     capm_lm = french_fama_regression(brka_m, '1990-01', '2012-05',
                                      regression_type=RegressionType.CAPM)

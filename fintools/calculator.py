@@ -7,7 +7,22 @@ QUARTERS_IN_YEAR = 4
 
 
 def compute_returns(prices):
+    """
+    Compute returns from prices
+    :param prices: a series of prices
+    :return: a series of returns
+    """
     return prices.pct_change().dropna()
+
+
+def compute_value(returns, initial_value=1):
+    """
+    Impute value from returns given an initial investment
+    :param returns:
+    :param initial_value:
+    :return:
+    """
+    return initial_value*(returns+1.0).cumprod()
 
 
 def compute_compound_return(returns):
@@ -16,7 +31,7 @@ def compute_compound_return(returns):
     :param returns: vector of returns
     :return: the compounded return
     """
-    # This implementation uses sum instead of prod and is faster than: (returns + 1).prod() - 1
+    # This implementation uses sum instead of product and is faster than: (returns + 1).prod() - 1
     return np.expm1(np.log1p(returns).sum())
 
 

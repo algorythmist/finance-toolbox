@@ -1,9 +1,11 @@
+chevron
 jupyter
 matplotlib
 numpy
 pandas
+pandas-datareader
 pytest
+scikit-learn
 scipy
-sklearn
 statsmodels
-
+tiingo

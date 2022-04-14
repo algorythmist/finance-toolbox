@@ -12,14 +12,17 @@ class RegressionType(Enum):
 
 
 def french_fama_regression(portfolio_returns, start_index, end_index,
-                           regression_type: RegressionType):
+                           fff_return=None,
+                           regression_type: RegressionType = RegressionType.CAPM):
     """
     Regress a series of returns on the FFF parameters
     RegressionType.CAPM: Just use excess market return and alpha
     RegressionType.THREE_FACTOR: Use the CAPM factors plus High Minus Low (HML) and Small minus Big (SMB)
     RegressionType.FIVE_FACTOR: Use the three factors plus RMW and CMA
     """
-    fff = load_fff_returns_monthly()[start_index:end_index]
+    if fff_return is None:
+        fff_return = load_fff_returns_monthly()
+    fff = fff_return[start_index:end_index]
     excess_returns = portfolio_returns[start_index:end_index] - fff[['RF']].values
     excess_market = fff[['Mkt-RF']].copy()
     factors = excess_market

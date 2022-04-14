@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 
-from fintools import *
+import pandas as pd
+
+from fintools.calculator import *
+from fintools.portfolio import compute_portfolio_return
 
 
 class InvestmentStrategy(ABC):
@@ -20,8 +23,8 @@ class InvestmentStrategy(ABC):
 class NoRebalanceInvestmentStrategy(InvestmentStrategy):
 
     def update_portfolio_weighs(self, current_weights, account_value, returns):
-        denominator = current_weights @ (1+returns)
-        return np.multiply(current_weights, (1+returns))/denominator
+        denominator = current_weights @ (1 + returns)
+        return np.multiply(current_weights, (1 + returns)) / denominator
 
 
 class Stats:
@@ -57,7 +60,7 @@ class StrategySimulator:
             stats.update(step, portfolio_return, account_value)
             # update weights
             if self.__investment_strategy:
-                portfolio_weights = self.__investment_strategy\
+                portfolio_weights = self.__investment_strategy \
                     .update_portfolio_weighs(portfolio_weights, account_value, asset_returns)
 
         return stats
