@@ -15,10 +15,11 @@ def test_compute_returns():
 
 
 def test_compute_value():
-    returns = [0.2, 0.2, 0.2, 0.2, 0.2]
-    v1 = compute_value(returns)
+    returns = pd.DataFrame({"returns": [0.2, 0.2, 0.2, 0.2, 0.2]})
+    amounts = compute_value(returns)
+    result = amounts['returns'].values
     expected = [1.2, 1.44, 1.728, 2.0736, 2.48832]
-    assert all([a == b for a, b in zip(v1, expected)])
+    assert all([a == b for a, b in zip(result, expected)])
 
 
 def test_annualized_return():
