@@ -26,3 +26,12 @@ def geometric_brownian_motion(mu, sigma,
     # fix the first row
     rets_plus_1[0] = 1
     return initial_price * pd.DataFrame(rets_plus_1).cumprod() if prices else pd.DataFrame(rets_plus_1 - 1)
+
+
+def show_gbm(n_scenarios, mu, sigma):
+    s_0=100
+    prices = geometric_brownian_motion(scenarios=n_scenarios, mu=mu, sigma=sigma, initial_price=s_0, years=10)
+    ax = prices.plot(legend=False, color='indianred', alpha=0.5, linewidth=2,figsize=(12,5))
+    ax.axhline(y=s_0,ls=':',color='black')
+    #draw a line through the origin
+    ax.plot(0,s_0,marker='o',color='darkred', alpha=0.2)
