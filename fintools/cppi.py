@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from asset_model import geometric_brownian_motion
+from fintools.asset_model import geometric_brownian_motion
 
 #TODO
 # class CcpiStrategy(InvestmentStrategy):

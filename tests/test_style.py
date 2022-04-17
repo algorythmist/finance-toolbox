@@ -1,4 +1,3 @@
-import numpy as np
 import pytest
 
 from fintools.calculator import resample_returns

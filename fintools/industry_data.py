@@ -96,8 +96,15 @@ def load_hfi_returns():
     return hfi
 
 
-def load_prices(filename):
-    return pd.read_csv(os.path.join(PRICE_DATA_DIR, filename),
-                       index_col="Date",
-                       parse_dates=True,
-                       na_values=['nan'])
+def get_total_market_index_returns():
+    """
+    Load the 30 industry portfolio data and derive the returns of a capweighted total market index
+    """
+    ind_nfirms = load_firms()
+    ind_size = load_sizes()
+    ind_return = load_industry_returns()
+    ind_mktcap = ind_nfirms * ind_size
+    total_mktcap = ind_mktcap.sum(axis=1)
+    ind_capweight = ind_mktcap.divide(total_mktcap, axis="rows")
+    total_market_return = (ind_capweight * ind_return).sum(axis="columns")
+    return total_market_return

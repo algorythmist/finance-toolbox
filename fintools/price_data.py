@@ -2,6 +2,11 @@ import os
 import pandas as pd
 from pandas_datareader import DataReader
 
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+PRICE_DATA_DIR = os.path.join(ROOT_DIR, '../data/prices')
+
+
+
 
 def load_daily_prices(symbol, from_date, to_date):
     """
@@ -31,7 +36,15 @@ def download_daily_prices(symbol, from_date, to_date, filename=None):
     prices.to_csv(filename)
 
 
-def read_prices(symbol, relative_path='data/prices/', filename=None):
+def read_prices_from_file(filename):
+    return pd.read_csv(os.path.join(PRICE_DATA_DIR, filename),
+                       index_col="Date",
+                       parse_dates=True,
+                       infer_datetime_format=True,
+                       na_values=['nan'])
+
+
+def read_prices(symbol, relative_path=PRICE_DATA_DIR, filename=None):
     """
     Read prices from a CSV file names {symbol}.csv
     :param symbol: symbol to load
@@ -44,7 +57,9 @@ def read_prices(symbol, relative_path='data/prices/', filename=None):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     path = os.path.join(dir_path, relative_path + filename)
     return pd.read_csv(path,
-                       index_col="Date", parse_dates=True,
+                       index_col="Date",
+                       parse_dates=True,
+                       infer_datetime_format=True,
                        na_values=['nan'])
 
 
