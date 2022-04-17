@@ -6,8 +6,6 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 PRICE_DATA_DIR = os.path.join(ROOT_DIR, '../data/prices')
 
 
-
-
 def load_daily_prices(symbol, from_date, to_date):
     """
     Load daily prices from Yahoo Finance

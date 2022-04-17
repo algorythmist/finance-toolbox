@@ -1,9 +1,6 @@
 import pytest
 
-from fintools.calculator import resample_returns
-from fintools.style import *
-from fintools.industry_data import *
-from fintools.factor_data import *
+from fintools import *
 
 
 def test_style():
@@ -21,7 +18,7 @@ def test_style_ff():
     end_index = '2012-05'
 
     # dependent variable: Berkshire Hathaway returns
-    brka_d = load_prices('brka_d_ret.csv')
+    brka_d = read_prices_from_file('brka_d_ret.csv')
     brka_m = resample_returns(brka_d, 'M')[start_index:end_index]
 
     # explanatory variable: Some FF factors

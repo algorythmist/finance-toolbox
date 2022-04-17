@@ -11,4 +11,5 @@ from .price_data import *
 from .portfolio import *
 from .simulator import *
 from .statistics import *
+from .style import *
 from .visualizations import *
