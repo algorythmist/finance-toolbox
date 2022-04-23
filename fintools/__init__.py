@@ -5,6 +5,7 @@ from .calculator import *
 from .cppi import *
 from .factor_data import *
 from .factors import *
+from .fixed_income import *
 from .industry_data import *
 from .metrics import *
 from .price_data import *
