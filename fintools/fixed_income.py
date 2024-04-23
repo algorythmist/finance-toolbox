@@ -16,7 +16,7 @@ def present_value(values: pd.Series, risk_free_rate: float):
     """
     Computes the present value of a sequence of liabilities
     :param values a Series sequence indexed by date
-    :param risk_free_rate risk free rate per period
+    :param risk_free_rate risk-free rate per period
     :return: the present value of the sequence
     """
     dates = values.index
@@ -27,18 +27,18 @@ def present_value(values: pd.Series, risk_free_rate: float):
 def discount(risk_free_rate_per_period: float, periods: float):
     """
     Compute the value of a pure discount bond that pays a dollar in the future
-    :param risk_free_rate_per_period: the risk free rate
+    :param risk_free_rate_per_period: the risk-free rate
     :param periods: the number of periods in the future
     :return: The discount on a nominal value of $1
     """
     return (1 + risk_free_rate_per_period) ** (-periods)
 
 
-def calculate_future_value(present_value,
-                           annual_rate,
-                           years,
-                           compounding_periods_per_year=1,
-                           continuous_compounding=False):
+def calculate_future_value(present_value: float,
+                           annual_rate: float,
+                           years: int,
+                           compounding_periods_per_year: int = 1,
+                           continuous_compounding: bool = False):
     """
     Calculate the future value V_n of a fixed income investment worth V_0:
     V_n = V_0 * (1+r/p)^{np}
@@ -56,11 +56,11 @@ def calculate_future_value(present_value,
     return present_value * ((1 + period_rate) ** periods)
 
 
-def calculate_present_value(future_value,
-                            annual_rate,
-                            years,
-                            compounding_periods_per_year=1,
-                            continuous_compounding=False):
+def calculate_present_value(future_value: float,
+                            annual_rate: float,
+                            years: int,
+                            compounding_periods_per_year: int = 1,
+                            continuous_compounding: bool = False):
     """
         Calculate the presnt value V_0 of a fixed income investment worth V_n after n years
         V_0 = V_n / (1+r/p)^{np}
@@ -76,6 +76,21 @@ def calculate_present_value(future_value,
     periods = years * compounding_periods_per_year
     period_rate = annual_rate / compounding_periods_per_year
     return future_value / ((1 + period_rate) ** periods)
+
+
+def years_to_reach_target(principal: float,
+                          target_value: float,
+                          rate: float,
+                          compounding_periods_per_year: int = 1) -> int:
+    """
+    Compute the number of years to reach a target value
+    :param principal: the initial value
+    :param target_value: the target value
+    :param rate: the annual rate of return
+    :return: the number of years to reach the target value
+    """
+    ratio = np.log(target_value / principal) / np.log1p(rate / compounding_periods_per_year)
+    return int(np.ceil(ratio / compounding_periods_per_year))
 
 
 def accrued_interest(rate, number_of_periods):

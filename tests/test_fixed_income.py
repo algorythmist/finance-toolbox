@@ -17,6 +17,12 @@ def test_calculate_present_value():
     assert 1000 == pytest.approx(value, 0.001)
     value = calculate_present_value(1161.83424, 0.03, 5, continuous_compounding=True)
     assert 1000 == pytest.approx(value, 0.001)
+    assert pytest.approx(calculate_present_value(1000, 0.12, 2), 0.0001) == 797.1938
+
+
+def test_years_to_reach_target():
+    assert years_to_reach_target(1000, 2000, 0.06, 365) == 12
+    calculate_future_value(1000, 0.06, 12, 365) == pytest.approx(2000, 0.001)
 
 
 def test_discount():
