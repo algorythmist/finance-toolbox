@@ -40,8 +40,8 @@ def calculate_future_value(present_value,
                            compounding_periods_per_year=1,
                            continuous_compounding=False):
     """
-    Calculate the future value V_n of an fixed income investment worth V_0:
-    V_n = V_0 * (1+r)^n
+    Calculate the future value V_n of a fixed income investment worth V_0:
+    V_n = V_0 * (1+r/p)^{np}
     :param present_value: the current value V_0
     :param annual_rate: the annual rate of return
     :param years: years ahead
@@ -54,6 +54,28 @@ def calculate_future_value(present_value,
     periods = years * compounding_periods_per_year
     period_rate = annual_rate / compounding_periods_per_year
     return present_value * ((1 + period_rate) ** periods)
+
+
+def calculate_present_value(future_value,
+                            annual_rate,
+                            years,
+                            compounding_periods_per_year=1,
+                            continuous_compounding=False):
+    """
+        Calculate the presnt value V_0 of a fixed income investment worth V_n after n years
+        V_0 = V_n / (1+r/p)^{np}
+        :param future_value: the future value V_n
+        :param annual_rate: the annual rate of return
+        :param years: years ahead
+        :param compounding_periods_per_year: periods per year when interest is paid
+        :param continuous_compounding: set to True if compounding continuously
+        :return:
+        """
+    if continuous_compounding:
+        return future_value / np.exp(annual_rate * years)
+    periods = years * compounding_periods_per_year
+    period_rate = annual_rate / compounding_periods_per_year
+    return future_value / ((1 + period_rate) ** periods)
 
 
 def accrued_interest(rate, number_of_periods):
@@ -106,7 +128,7 @@ def simulate_cir(a, b, sigma,
 
     for step in range(1, n_steps):
         r_t = rates[step - 1]
-        #TODO: optionally remove sqrt to simulate Vasicek model
+        # TODO: optionally remove sqrt to simulate Vasicek model
         dr_t = a * (b - r_t) * dt + sigma * np.sqrt(r_t) * shock[step]
         rates[step] = abs(r_t + dr_t)
     return pd.DataFrame(data=inst_to_annual(rates), index=range(n_steps))

@@ -12,6 +12,13 @@ def test_calculate_future_value():
     assert 1161.83424 == pytest.approx(value, 0.001)
 
 
+def test_calculate_present_value():
+    value = calculate_present_value(1159.27407, 0.03, 5, 1)
+    assert 1000 == pytest.approx(value, 0.001)
+    value = calculate_present_value(1161.83424, 0.03, 5, continuous_compounding=True)
+    assert 1000 == pytest.approx(value, 0.001)
+
+
 def test_discount():
     assert .7441 == pytest.approx(discount(0.03, 10), 0.0001)
 
