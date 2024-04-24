@@ -1,12 +1,14 @@
 import os
+
 import pandas as pd
-from pandas_datareader import data as pdr
 import yfinance as yf
+from pandas_datareader import data as pdr
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 PRICE_DATA_DIR = os.path.join(ROOT_DIR, '../data/prices')
 
 yf.pdr_override()
+
 
 def load_daily_prices(symbol, from_date, to_date):
     """
@@ -17,6 +19,7 @@ def load_daily_prices(symbol, from_date, to_date):
     :return: a data frame with all the price columns
     """
     return pdr.get_data_yahoo(symbol, start=from_date, end=to_date)
+
 
 def download_daily_prices(symbol, from_date, to_date, filename=None):
     """
