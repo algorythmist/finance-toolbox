@@ -1,12 +1,13 @@
 chevron
-jupyter
 matplotlib
 numpy
 pandas
-pandas-datareader
 pytest
 scikit-learn
 scipy
 statsmodels
 tiingo
 yfinance
+jupyter
+jupyter_contrib_nbextensions
+ipykernel
