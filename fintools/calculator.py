@@ -107,4 +107,5 @@ def geometric_return(returns):
 
 
 def resample_returns(returns, period_type='M'):
-    return returns.resample(period_type).apply(compute_compound_return).to_period(period_type)
+    returns = returns.tz_localize(None)
+    return returns.resample(period_type+'E').apply(compute_compound_return).to_period(period_type)

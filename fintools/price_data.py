@@ -5,15 +5,17 @@ import yfinance as yf
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 PRICE_DATA_DIR = os.path.join(ROOT_DIR, '../data/prices')
 
-def load_daily_prices(symbol, from_date, to_date):
+def load_daily_prices(symbols, from_date, to_date):
     """
     Load daily prices from Yahoo Finance
-    :param symbol: the ticker
+    :param symbols: the tickers
     :param from_date: price history start date
     :param to_date: price history end date
     :return: a data frame with all the price columns
     """
-    return yf.download(symbol, start=from_date, end=to_date)
+    data = yf.download(symbols, start=from_date, end=to_date)
+    data.index = data.index.date
+    return data
 
 
 def download_daily_prices(symbol, from_date, to_date, filename=None):

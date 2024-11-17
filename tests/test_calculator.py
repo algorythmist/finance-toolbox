@@ -55,3 +55,11 @@ def test_annual_to_daily_rate():
 def test_geometric_return():
     returns = [0.02, 0.08, -0.04]
     assert 0.01882 == pytest.approx(geometric_return(returns), 0.001)
+
+def test_resample():
+    returns = read_prices_from_file('brka_d_ret.csv')
+    assert len(returns) == 7307
+    monthly_returns = resample_returns(returns, 'M')
+    assert len(monthly_returns) == 348
+    yearly_returns = resample_returns(returns, 'Y')
+    assert len(yearly_returns) == 29
