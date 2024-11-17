@@ -10,6 +10,7 @@ from .industry_data import *
 from .metrics import *
 from .price_data import *
 from .portfolio import *
+from .rate_data import *
 from .simulator import *
 from .statistics import *
 from .style import *
