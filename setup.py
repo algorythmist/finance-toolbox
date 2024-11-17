@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='finance-toolbox',
-    version='0.1',
+    version='0.2',
     packages=setuptools.find_packages(),
     url='https://github.com/algorythmist/finance-toolbox',
     license='MIT',
@@ -13,5 +13,5 @@ setuptools.setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    python_requires='>=3.8'
+    python_requires='>=3.11'
 )
