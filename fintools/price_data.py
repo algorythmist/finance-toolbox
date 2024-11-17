@@ -14,7 +14,6 @@ def load_daily_prices(symbols, from_date, to_date):
     :return: a data frame with all the price columns
     """
     data = yf.download(symbols, start=from_date, end=to_date)
-    data.index = data.index.date
     return data
 
 
