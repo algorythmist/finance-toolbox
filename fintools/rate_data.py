@@ -18,10 +18,12 @@ def load_yahoo_tbill(symbol, from_date, to_date):
     """
     Load T-bill data from Yahoo Finance
     """
-    return yf.download(symbol, from_date, to_date)
+    df = yf.download(symbol, from_date, to_date)/100.0
+    return df.xs(key=symbol, axis=1, level=1)  # Use .xs to select by level
 
 def load_fred_tbill(symbol, from_date, to_date):
     """
     Load T-bill data from FRED
     """
-    return web.DataReader(symbol, 'fred', from_date, to_date)
+    df = web.DataReader(symbol, 'fred', from_date, to_date)/100
+    return df[symbol]
