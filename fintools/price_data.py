@@ -36,7 +36,6 @@ def read_prices_from_file(filename):
     return pd.read_csv(os.path.join(PRICE_DATA_DIR, filename),
                        index_col="Date",
                        parse_dates=True,
-                       infer_datetime_format=True,
                        na_values=['nan'])
 
 

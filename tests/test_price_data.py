@@ -7,7 +7,7 @@ from fintools.price_data import download_daily_prices, load_daily_prices
 def test_load_daily_prices():
     sp500_prices = load_daily_prices('^GSPC', '1970-01-01', '2022-01-01')
     assert len(sp500_prices) == 13118
-    monthly_prices = sp500_prices.resample('M').last()
+    monthly_prices = sp500_prices.resample('ME').last()
     assert len(monthly_prices) == 52*12
 
 
