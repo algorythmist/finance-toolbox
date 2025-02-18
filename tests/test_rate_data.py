@@ -3,11 +3,6 @@ from datetime import datetime
 from fintools.rate_data import load_yahoo_tbill, load_fred_tbill
 import pytest
 
-
-def test():
-    import yfinance as yf
-    df = yf.download("^FVX", '2020-01-01', '2021-01-01')
-
 def test_yahoo():
     """
     Test Yahoo Finance T-bill data
