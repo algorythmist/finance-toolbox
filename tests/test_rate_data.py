@@ -11,7 +11,7 @@ def test_yahoo():
     to_date = '2021-01-01'
     tbill = load_yahoo_tbill(TBILL_5_YEAR, from_date, to_date)
     assert len(tbill) == 253
-    v = tbill['Adj Close']['2020-02-03']
+    v = tbill['Close']['2020-02-03']
     assert v == pytest.approx(0.01343)
 
 def test_fred():
